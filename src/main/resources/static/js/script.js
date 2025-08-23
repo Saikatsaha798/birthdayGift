@@ -1,237 +1,190 @@
-/**
-* Template Name: Devin
-* Template URL: https://bootstrapmade.com/devin-bootstrap-template/
-* Updated: Jul 23 2025 with Bootstrap v5.3.7
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
-(function() {
-  "use strict";
-
-  /**
-   * Apply .scrolled class to the body as the page is scrolled down
-   */
-  function toggleScrolled() {
-    const selectBody = document.querySelector('body');
-    const selectHeader = document.querySelector('#header');
-    if (!selectHeader.classList.contains('scroll-up-sticky') && !selectHeader.classList.contains('sticky-top') && !selectHeader.classList.contains('fixed-top')) return;
-    window.scrollY > 100 ? selectBody.classList.add('scrolled') : selectBody.classList.remove('scrolled');
-  }
-
-  document.addEventListener('scroll', toggleScrolled);
-  window.addEventListener('load', toggleScrolled);
-
-  /**
-   * Mobile nav toggle
-   */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
-
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
-  }
-  if (mobileNavToggleBtn) {
-    mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-  }
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
-      }
-    });
-
-  });
-
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
-      e.preventDefault();
-      this.parentNode.classList.toggle('active');
-      this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
-      e.stopImmediatePropagation();
-    });
-  });
-
-  /**
-   * Preloader
-   */
-  const preloader = document.querySelector('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove();
-    });
-  }
-
-  /**
-   * Scroll top button
-   */
-  let scrollTop = document.querySelector('.scroll-top');
-
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+// Sample gallery data - replace with your actual photos
+const galleryItems = [
+    {
+        image: "/images/img1.jpg",
+        caption: "Our first date - unforgettable! 💕"
+    },
+    {
+        image: "/images/img2.jpg",
+        caption: "Our first College Fest 🌚"
+    },
+    {
+        image: "/images/img3.jpg",
+        caption: "Our first time 🥵"
+    },
+    {
+        image: "/images/img4.jpg",
+        caption: "Fried Chicken and you 🍗"
+    },
+    {
+        image: "/images/img5.jpg",
+        caption: "You with a bindi 💣"
+    },
+    {
+        image: "/images/img6.jpg",
+        caption: "You and a saree ❤️‍🔥"
+    },
+    {
+        image: "/images/img7.jpg",
+        caption: "End of College days 🎇"
     }
-  }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
+];
 
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
+// Birthday wishes array
+const wishes = [
+    "May this year bring you endless joy and amazing adventures! 🎉",
+    "You deserve all the happiness in the world today and always! 💖",
+    "Here's to another year of being absolutely incredible! ✨",
+    "May your birthday be as beautiful and special as you are! 🌸",
+    "Wishing you love, laughter, and all your heart desires! 💕",
+    "Another year of being the most amazing person I know! 🥰",
+    "May this birthday be the start of your best year yet! 🎂",
+    "You make every day brighter just by being you! ☀️"
+];
 
-  /**
-   * Initiate glightbox
-   */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
+// Virtual gifts array
+const gifts = [
+    "🌹 A bouquet of virtual roses just for you!",
+    "💎 A sparkly diamond of love and appreciation!",
+    "🦄 A magical unicorn to grant all your wishes!",
+    "🍰 The sweetest virtual cake made with love!",
+    "⭐ A shooting star to make all your dreams come true!",
+    "🎁 A box full of hugs and kisses from me!"
+];
 
-  /**
-   * Init swiper sliders
-   */
-  function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
-      let config = JSON.parse(
-        swiperElement.querySelector(".swiper-config").innerHTML.trim()
-      );
+// Initialize the page
+function init() {
+    createFloatingHearts();
+    populateGallery();
+    startCountdown();
+    addSparkleEffect();
+}
 
-      if (swiperElement.classList.contains("swiper-tab")) {
-        initSwiperWithCustomPagination(swiperElement, config);
-      } else {
-        new Swiper(swiperElement, config);
-      }
-    });
-  }
+// Create floating hearts animation
+function createFloatingHearts() {
+    const heartsContainer = document.getElementById('floatingHearts');
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '💖';
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 3 + 's';
+        heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+        heartsContainer.appendChild(heart);
 
-  window.addEventListener("load", initSwiper);
-
-  /**
-   * Initiate Pure Counter
-   */
-  new PureCounter();
-
-  /**
-   * Init isotope layout and filters
-   */
-  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
-    let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
-    let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
-    let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
-
-    let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
-        itemSelector: '.isotope-item',
-        layoutMode: layout,
-        filter: filter,
-        sortBy: sort
-      });
-    });
-
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
-      filters.addEventListener('click', function() {
-        isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
-        this.classList.add('filter-active');
-        initIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-        if (typeof aosInit === 'function') {
-          aosInit();
-        }
-      }, false);
-    });
-
-  });
-
-  /*
-   * Pricing Toggle
-   */
-
-  const pricingContainers = document.querySelectorAll('.pricing-toggle-container');
-
-  pricingContainers.forEach(function(container) {
-    const pricingSwitch = container.querySelector('.pricing-toggle input[type="checkbox"]');
-    const monthlyText = container.querySelector('.monthly');
-    const yearlyText = container.querySelector('.yearly');
-
-    pricingSwitch.addEventListener('change', function() {
-      const pricingItems = container.querySelectorAll('.pricing-item');
-
-      if (this.checked) {
-        monthlyText.classList.remove('active');
-        yearlyText.classList.add('active');
-        pricingItems.forEach(item => {
-          item.classList.add('yearly-active');
-        });
-      } else {
-        monthlyText.classList.add('active');
-        yearlyText.classList.remove('active');
-        pricingItems.forEach(item => {
-          item.classList.remove('yearly-active');
-        });
-      }
-    });
-  });
-
-  /**
-   * Frequently Asked Questions Toggle
-   */
-  document.querySelectorAll('.faq-item h3, .faq-item .faq-toggle, .faq-item .faq-header').forEach((faqItem) => {
-    faqItem.addEventListener('click', () => {
-      faqItem.parentNode.classList.toggle('faq-active');
-    });
-  });
-
-  /**
-   * Correct scrolling position upon page load for URLs containing hash links.
-   */
-  window.addEventListener('load', function(e) {
-    if (window.location.hash) {
-      if (document.querySelector(window.location.hash)) {
         setTimeout(() => {
-          let section = document.querySelector(window.location.hash);
-          let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
-          window.scrollTo({
-            top: section.offsetTop - parseInt(scrollMarginTop),
-            behavior: 'smooth'
-          });
-        }, 100);
-      }
+            heart.remove();
+        }, 6000);
+    }, 1000);
+}
+
+// Populate the Pinterest-style gallery
+function populateGallery() {
+    const gallery = document.getElementById('gallery');
+    galleryItems.forEach(item => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `
+            <img src="${item.image}" alt="Memory" loading="lazy">
+            <div class="caption">${item.caption}</div>
+        `;
+        gallery.appendChild(galleryItem);
+    });
+}
+
+// Countdown to end of birthday
+function startCountdown() {
+    function updateCountdown() {
+        const now = new Date();
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const timeDiff = endOfDay - now;
+        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown').innerHTML =
+            `${hours}h ${minutes}m ${seconds}s`;
     }
-  });
 
-  /**
-   * Navmenu Scrollspy
-   */
-  let navmenulinks = document.querySelectorAll('.navmenu a');
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
 
-  function navmenuScrollspy() {
-    navmenulinks.forEach(navmenulink => {
-      if (!navmenulink.hash) return;
-      let section = document.querySelector(navmenulink.hash);
-      if (!section) return;
-      let position = window.scrollY + 200;
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
-        navmenulink.classList.add('active');
-      } else {
-        navmenulink.classList.remove('active');
-      }
-    })
-  }
-  window.addEventListener('load', navmenuScrollspy);
-  document.addEventListener('scroll', navmenuScrollspy);
+// Show random birthday wish
+function showRandomWish() {
+    const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+    document.getElementById('wishDisplay').innerHTML = randomWish;
+    throwConfetti();
+}
 
-})();
+// Open virtual gift
+function openGift() {
+    const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
+    document.getElementById('giftMessage').innerHTML = randomGift;
+    throwConfetti();
+}
+
+// Confetti effect
+function throwConfetti() {
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            createConfetti();
+        }, i * 50);
+    }
+}
+
+function createConfetti() {
+    const confetti = document.createElement('div');
+    confetti.style.position = 'fixed';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.top = '-10px';
+    confetti.style.width = '10px';
+    confetti.style.height = '10px';
+    confetti.style.backgroundColor = ['#ff69b4', '#ffd700', '#ff6347', '#98fb98', '#87ceeb'][Math.floor(Math.random() * 5)];
+    confetti.style.pointerEvents = 'none';
+    confetti.style.zIndex = '1000';
+    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => {
+        confetti.remove();
+    }, 5000);
+}
+
+// Add sparkle effect to magic click card
+function addSparkleEffect() {
+    const magicCard = document.querySelector('.feature-card:last-child');
+    magicCard.addEventListener('click', (e) => {
+        const rect = magicCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        for (let i = 0; i < 8; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkles';
+            sparkle.style.left = (rect.left + x) + 'px';
+            sparkle.style.top = (rect.top + y) + 'px';
+            sparkle.style.animationDelay = i * 0.1 + 's';
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+    });
+}
+
+// Add CSS animation for confetti
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Start everything when page loads
+window.addEventListener('load', init);
