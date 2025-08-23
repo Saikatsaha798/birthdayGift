@@ -11,7 +11,7 @@ public class MainController {
         return "home-page";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/main")
     public String indexPage (){
         return "index";
     }
