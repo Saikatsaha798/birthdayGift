@@ -1,5 +1,5 @@
-# Use an official Maven image with JDK 21
-FROM eclipse-temurin:21-jdk as build
+# Use an official Maven image with JDK 21 for building
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -11,8 +11,8 @@ COPY src ./src
 # Run the Maven build
 RUN mvn clean package -DskipTests
 
-# Use a slim JDK 21 image for the runtime
-FROM eclipse-temurin:21-jre-slim
+# Use a JRE 21 image for the runtime
+FROM eclipse-temurin:21-jre
 
 # Set the working directory for the application
 WORKDIR /app
